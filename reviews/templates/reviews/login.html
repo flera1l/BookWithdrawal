@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Вход — BookPulse{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="card card-dark p-4">
+      <h3 class="fw-bold text-white mb-3 text-center">Вход в аккаунт</h3>
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label">Имя пользователя</label>
+          <input type="text" name="username" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Пароль</label>
+          <input type="password" name="password" class="form-control" required>
+        </div>
+        {% if form.errors %}
+          <div class="alert alert-danger py-2 small">Неверный логин или пароль.</div>
+        {% endif %}
+        <div class="d-grid">
+          <button type="submit" class="btn btn-purple">Войти</button>
+        </div>
+      </form>
+      <p class="text-center text-secondary mt-3 mb-0 small">
+        Нет аккаунта? <a href="{% url 'register' %}" class="text-info">Зарегистрироваться</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

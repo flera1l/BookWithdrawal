@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ review.title }} — Рецензия{% endblock %}
+
+{% block content %}
+<div class="card card-dark p-4">
+  <div class="row g-4">
+    <div class="col-md-4">
+      {% if review.cover_url %}
+        <img src="{{ review.cover_url }}" class="img-fluid rounded-3 shadow w-100" alt="{{ review.title }}">
+      {% else %}
+        <div class="rounded-3 d-flex align-items-center justify-content-center text-secondary" style="height: 380px; background-color: #22222a;">
+          Обложка отсутствует
+        </div>
+      {% endif %}
+    </div>
+    <div class="col-md-8 d-flex flex-column">
+      <div class="d-flex justify-content-between align-items-start">
+        <div>
+          <span class="badge badge-purple mb-2">{{ review.genre|default:"Без жанра" }}</span>
+          {% if review.is_recommended %}
+            <span class="badge bg-success mb-2">Рекомендую</span>
+          {% else %}
+            <span class="badge bg-danger mb-2">Не рекомендую</span>
+          {% endif %}
+          <h1 class="fw-bold text-white mb-1">{{ review.title }}</h1>
+          <h5 class="text-secondary mb-3">{{ review.author }}</h5>
+        </div>
+        <div class="fs-4 fw-bold text-warning">★ {{ review.rating }}/5</div>
+      </div>
+
+      <p class="text-secondary small">
+        Опубликовал: <strong class="text-light">{{ review.reviewer.username }}</strong> |
+        Дата: {{ review.created_at|date:"d.m.Y H:i" }} |
+        Страниц: {{ review.pages }}
+      </p>
+
+      <hr class="border-secondary">
+      <h5 class="text-white">Текст рецензии:</h5>
+      <p class="fs-6 text-light opacity-90" style="white-space: pre-line;">{{ review.review_text }}</p>
+
+      <div class="mt-auto pt-3 d-flex gap-2">
+        <a href="{% url 'review_list' %}" class="btn btn-outline-light">← Назад к списку</a>
+        {% if user == review.reviewer %}
+          <a href="{% url 'review_edit' review.pk %}" class="btn btn-purple">Редактировать рецензию</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
